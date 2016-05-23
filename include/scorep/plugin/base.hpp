@@ -22,8 +22,8 @@
 #include <scorep/plugin/traits/static_polymorph_resolve.hpp>
 
 #include <scorep/plugin/log.hpp>
-
-#include <scorep/util.hpp>
+#include <scorep/plugin/util/environment.hpp>
+#include <scorep/plugin/util/memory.hpp>
 
 #include <cassert>
 #include <cstring>
@@ -212,6 +212,7 @@ namespace plugin
     SCOREP_METRIC_PLUGIN_ENTRY(CLASS_NAME)                                                         \
     {                                                                                              \
         scorep::plugin::log::plugin_name() = PLUGIN_NAME;                                          \
+        scorep::environment::plugin_name() = PLUGIN_NAME;                                          \
         return CLASS_NAME::get_info();                                                             \
     }
 

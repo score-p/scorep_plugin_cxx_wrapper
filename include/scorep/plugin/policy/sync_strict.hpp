@@ -10,7 +10,8 @@
 
 #include <scorep/plugin/interface.hpp>
 #include <scorep/plugin/traits/static_polymorph_resolve.hpp>
-#include <scorep/util.hpp>
+#include <scorep/plugin/util/memory.hpp>
+#include <scorep/plugin/util/types.hpp>
 
 #include <cstdint>
 

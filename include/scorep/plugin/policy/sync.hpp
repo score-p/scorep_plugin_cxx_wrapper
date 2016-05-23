@@ -10,7 +10,8 @@
 
 #include <scorep/plugin/interface.hpp>
 #include <scorep/plugin/traits/static_polymorph_resolve.hpp>
-#include <scorep/util.hpp>
+#include <scorep/plugin/util/memory.hpp>
+#include <scorep/plugin/util/types.hpp>
 
 #include <cstdint>
 
@@ -69,13 +70,12 @@ namespace plugin
                 info.get_optional_value = get_optional_value_handler;
             }
 
-            static bool get_optional_value_handler(std::int32_t id,
-                                                   uint64_t* value)
+            static bool get_optional_value_handler(std::int32_t id, uint64_t* value)
             {
                 proxy p(value);
 
-                static_cast<typename traits::static_polymorph_resolve<
-                    Plugin, Policies>::type*>(&Plugin::instance())
+                static_cast<typename traits::static_polymorph_resolve<Plugin, Policies>::type*>(
+                    &Plugin::instance())
                     ->get_optional_value(id, p);
 
                 return static_cast<bool>(p);
