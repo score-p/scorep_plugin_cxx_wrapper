@@ -62,6 +62,39 @@ namespace plugin
                 return id_to_handle;
             }
 
+        public:
+            template <bool Test = false>
+            void add_counter(Handle&)
+            {
+                static_assert(Test, "The object_id policy requires the definition of the method"
+                                    "`void add_counter(Handle&)`");
+            }
+
+            template <typename Cursor, bool Test = false>
+            void get_all_values(Handle&, Cursor&)
+            {
+                static_assert(Test,
+                              "The object_id policy requires the definition of the method"
+                              "`template <typename Cursor> void get_all_values(Handle&, Cursor&)`");
+            }
+
+            template <typename Proxy, bool Test = false>
+            void get_current_value(Handle&, Proxy&)
+            {
+                static_assert(
+                    Test, "The object_id policy requires the definition of the method"
+                          "`template <typename Proxy> void get_current_value(Handle&, Proxy&)`");
+            }
+
+            template <typename Proxy, bool Test = false>
+            void get_optional_value(Handle&, Proxy&)
+            {
+                static_assert(
+                    Test, "The object_id policy requires the definition of the method"
+                          "`template <typename Proxy> void get_optional_value(Handle&, Proxy&)`");
+            }
+
+        public:
             int32_t add_counter(const std::string& event)
             {
                 auto id = name_to_id.at(event);

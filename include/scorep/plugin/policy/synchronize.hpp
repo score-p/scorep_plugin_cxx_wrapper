@@ -28,9 +28,15 @@ namespace plugin
                 info.synchronize = synchronize_handler;
             }
 
-            static void
-            synchronize_handler(bool is_responsible,
-                                SCOREP_MetricSynchronizationMode sync_mode)
+            template <bool Test = false>
+            void synchronize(bool, SCOREP_MetricSynchronizationMode)
+            {
+                static_assert(Test, "The synchronize policy requires the definition of the method"
+                                    "`void synchronize(bool, SCOREP_MetricSynchronizationMode)`");
+            }
+
+            static void synchronize_handler(bool is_responsible,
+                                            SCOREP_MetricSynchronizationMode sync_mode)
             {
                 try
                 {

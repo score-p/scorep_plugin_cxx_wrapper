@@ -70,6 +70,15 @@ namespace plugin
                 info.get_optional_value = get_optional_value_handler;
             }
 
+            template <typename Proxy, bool Test = false>
+            bool get_optional_value(std::int32_t, Proxy&)
+            {
+                static_assert(
+                    Test,
+                    "The sync policy requires the definition of the method"
+                    "`template <typename Proxy> bool get_optional_value(std::int32_t, Proxy&)`");
+            }
+
             static bool get_optional_value_handler(std::int32_t id, uint64_t* value)
             {
                 proxy p(value);

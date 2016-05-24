@@ -142,6 +142,36 @@ namespace plugin
                 info.synchronize = synchronize_handler;
             }
 
+            template <bool Test = false>
+            void start()
+            {
+                static_assert(Test, "The async policy requires the definition of the method"
+                                    "`void start()`");
+            }
+
+            template <bool Test = false>
+            void stop()
+            {
+                static_assert(Test, "The async policy requires the definition of the method"
+                                    "`void stop()`");
+            }
+
+            template <bool Test = false>
+            void synchronize(bool, SCOREP_MetricSynchronizationMode)
+            {
+                static_assert(Test, "The async policy requires the definition of the method"
+                                    "`void synchronize(bool, SCOREP_MetricSynchronizationMode)`");
+            }
+
+            template <typename Cursor, bool Test = false>
+            void get_all_values(std::int32_t, Cursor&)
+            {
+                static_assert(
+                    Test,
+                    "The async policy requires the definition of the method"
+                    "`template <typename Cursor> void get_all_values(std::int32_t, Cursor&)`");
+            }
+
             static void synchronize_handler(bool is_responsible,
                                             SCOREP_MetricSynchronizationMode sync_mode)
             {

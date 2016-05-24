@@ -81,6 +81,24 @@ namespace plugin
             "A plugin cannot have both async and synchroinze policies. async comes with implicit "
             "synchronize functionality.");
 
+        template <bool Test = false>
+        std::vector<scorep::plugin::metric_property> get_event_info(const std::string&)
+        {
+            static_assert(Test, "The base plugin requires the definition of the method "
+                                "`std::vector<scorep::plugin::metric_property> "
+                                "get_event_info(const std::string&)`");
+            return {};
+        }
+
+        template <bool Test = false>
+        int32_t add_counter(const std::string&)
+        {
+            static_assert(Test, "The base plugin requires the definition of the method "
+                                "`int32_t add_counter(const std::string&)`");
+
+            return 0;
+        }
+
     public:
         static Child& instance()
         {
