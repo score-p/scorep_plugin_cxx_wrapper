@@ -3,7 +3,7 @@
  *  c_abstraction_test,
  *  a c++ plugin intereface for Score-P plugins.
  *  Copyright (C) 2015 TU Dresden, ZIH
- * 
+ *
  */
 #ifndef INCLUDE_SCOREP_CHRONO_TICKS_HPP
 #define INCLUDE_SCOREP_CHRONO_TICKS_HPP
@@ -25,7 +25,7 @@ namespace chrono
         {
         }
 
-        std::uint64_t count() const
+        std::uint64_t count() const noexcept
         {
             return count_;
         }

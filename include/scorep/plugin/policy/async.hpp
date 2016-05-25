@@ -84,7 +84,7 @@ namespace plugin
                     }
                 }
 
-                void store(chrono::ticks t, std::uint64_t v)
+                void store(chrono::ticks t, std::uint64_t v) noexcept
                 {
                     if (in_range(t))
                     {
@@ -95,17 +95,17 @@ namespace plugin
                     }
                 }
 
-                void store(chrono::ticks t, std::int64_t v)
+                void store(chrono::ticks t, std::int64_t v) noexcept
                 {
                     store(t, scorep::types::convert(v));
                 }
 
-                void store(chrono::ticks t, double v)
+                void store(chrono::ticks t, double v) noexcept
                 {
                     store(t, scorep::types::convert(v));
                 }
 
-                void store(chrono::ticks t, float v)
+                void store(chrono::ticks t, float v) noexcept
                 {
                     store(t, static_cast<double>(v));
                 }

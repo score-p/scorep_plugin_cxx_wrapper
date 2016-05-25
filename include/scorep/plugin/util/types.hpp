@@ -15,11 +15,12 @@ namespace scorep
 namespace types
 {
 
-    // Note: reinterpret_cast breaks strict aliasing rules
-    // A compiler should be smart enough to optimize that away...
     template <typename T>
-    static std::uint64_t convert(T v)
+    inline std::uint64_t convert(T v) noexcept
     {
+        // Note: reinterpret_cast breaks strict aliasing rules
+        // A compiler should be smart enough to optimize that away...
+
         union {
             std::uint64_t uint64;
             T type;
