@@ -63,6 +63,9 @@ namespace plugin
                 template <typename T>
                 void write(chrono::ticks t, T v)
                 {
+                    if (!in_range(t))
+                        return;
+
                     if (capacity_ == 0)
                     {
                         resize(1024);
@@ -86,13 +89,10 @@ namespace plugin
 
                 void store(chrono::ticks t, std::uint64_t v) noexcept
                 {
-                    if (in_range(t))
-                    {
-                        (*tvlist)[size_].timestamp = t.count();
-                        (*tvlist)[size_].value = v;
+                    (*tvlist)[size_].timestamp = t.count();
+                    (*tvlist)[size_].value = v;
 
-                        size_++;
-                    }
+                    size_++;
                 }
 
                 void store(chrono::ticks t, std::int64_t v) noexcept
@@ -120,7 +120,6 @@ namespace plugin
                     return size_;
                 }
 
-            private:
                 bool in_range(scorep::chrono::ticks t) const
                 {
                     return begin <= t && t <= end;
