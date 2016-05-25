@@ -27,6 +27,48 @@ namespace types
         union_value.type = v;
         return union_value.uint64;
     }
+
+    class proxy
+    {
+    public:
+        proxy() = delete;
+        proxy(const proxy&) = delete;
+
+        proxy(std::uint64_t* value) : value(value)
+        {
+        }
+
+        template <typename T>
+        void write(T t)
+        {
+            store(t);
+        }
+
+        void store(std::int64_t v)
+        {
+            store(convert(v));
+        }
+
+        void store(double v)
+        {
+            store(convert(v));
+        }
+
+        void store(std::uint64_t v)
+        {
+            *value = v;
+            written = true;
+        }
+
+        explicit operator bool() const
+        {
+            return written;
+        }
+
+    private:
+        bool written = false;
+        std::uint64_t* value;
+    };
 }
 }
 

@@ -24,44 +24,6 @@ namespace plugin
         template <typename Plugin, typename Policies>
         class sync
         {
-            class proxy
-            {
-            public:
-                proxy() = delete;
-                proxy(const proxy&) = delete;
-
-                proxy(std::uint64_t* value) : value(value)
-                {
-                }
-
-                void store(std::int64_t v)
-                {
-                    *value = scorep::types::convert(v);
-                    written = true;
-                }
-
-                void store(double v)
-                {
-                    *value = scorep::types::convert(v);
-                    written = true;
-                }
-
-                void store(std::uint64_t v)
-                {
-                    *value = v;
-                    written = true;
-                }
-
-                explicit operator bool() const
-                {
-                    return written;
-                }
-
-            private:
-                bool written = false;
-                std::uint64_t* value;
-            };
-
         public:
             static void build_info(SCOREP_Metric_Plugin_Info& info)
             {
@@ -81,7 +43,7 @@ namespace plugin
 
             static bool get_optional_value_handler(std::int32_t id, uint64_t* value)
             {
-                proxy p(value);
+                types::proxy p(value);
 
                 static_cast<typename traits::static_polymorph_resolve<Plugin, Policies>::type*>(
                     &Plugin::instance())
