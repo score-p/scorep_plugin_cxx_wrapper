@@ -53,7 +53,7 @@ namespace environment
         for (auto& c : upper_name)
             c = toupper(c);
 
-        return std::string("SCOREP_METRIC_") + upper_name + "_PLUGIN_";
+        return std::string("SCOREP_METRIC_") + upper_name + "_";
     }
 
     inline std::string get_variable(const std::string& name,
