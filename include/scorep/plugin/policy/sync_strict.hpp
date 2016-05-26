@@ -54,14 +54,12 @@ namespace plugin
             }
 
             template <typename Proxy, bool Test = false>
-            uint64_t get_current_value(std::int32_t, Proxy&)
+            void get_current_value(std::int32_t, Proxy&)
             {
                 static_assert(
                     Test,
                     "The sync_strict policy requires the definition of the method"
                     "`template <typename Proxy> uint64_t get_current_value(std::int32_t, Proxy&)`");
-
-                return 0;
             }
 
             static uint64_t get_current_value_handler(std::int32_t id)
