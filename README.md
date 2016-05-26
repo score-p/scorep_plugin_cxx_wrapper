@@ -63,9 +63,4 @@ SCOREP_METRIC_PLUGIN_CLASS(my_first_plugin, "my_first")
 
 1.  Check whether the plugin library can be loaded from the `LD_LIBRARY_PATH`.
 2.  Check, whether the include path is set corretly.
-3.  Write a mail to the author.
-
-Authors
--------
-
-*   Mario Bielert (mario.bielert at tu-dresden dot de)
+3.  Open an [issue](https://github.com/bmario/scorep_plugin_cxx_wrapper/issues).
