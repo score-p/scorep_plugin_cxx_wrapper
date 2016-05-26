@@ -68,4 +68,4 @@ The detailed documentation for this wrapper can be found in the
 
 1.  Check whether the plugin library can be loaded from the `LD_LIBRARY_PATH`.
 2.  Check, whether the include path is set corretly and you are building with `-std=c++14`.
-3.  Open an [issue](https://github.com/bmario/scorep_plugin_cxx_wrapper/issues).
+3.  Open an [issue](https://github.com/score-p/scorep_plugin_cxx_wrapper/issues).
