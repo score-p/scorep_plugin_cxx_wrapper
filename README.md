@@ -59,8 +59,13 @@ name of the `.so` library for your plugin, e.g., `libmy_first_plugin.so` matches
 SCOREP_METRIC_PLUGIN_CLASS(my_first_plugin, "my_first")
 ```
 
+### Detailed documentation
+
+The detailed documentation for this wrapper can be found in the
+[Wiki](https://github.com/score-p/scorep_plugin_cxx_wrapper/wiki).
+
 ### If anything fails
 
 1.  Check whether the plugin library can be loaded from the `LD_LIBRARY_PATH`.
-2.  Check, whether the include path is set corretly.
+2.  Check, whether the include path is set corretly and you are building with `-std=c++14`.
 3.  Open an [issue](https://github.com/bmario/scorep_plugin_cxx_wrapper/issues).

@@ -221,17 +221,10 @@ namespace plugin
             memset(&info, 0, sizeof(SCOREP_Metric_Plugin_Info));
 
             info.plugin_version = SCOREP_METRIC_PLUGIN_VERSION;
-
-            // <!---technically this is not required
             info.initialize = initialize_handler;
             info.finalize = finalize_handler;
             info.get_event_info = get_event_info_handler;
             info.add_counter = add_counter_handler;
-            // info.get_current_value = nullptr;
-            // info.get_optional_value = nullptr;
-            // info.get_all_values = nullptr;
-            // info.set_clock_function = nullptr;
-            // --->
 
             traits::build_info<Args<Child, traits::meta_list<Args...>>...>()(info);
 
