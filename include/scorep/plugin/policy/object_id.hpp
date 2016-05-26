@@ -40,26 +40,26 @@ namespace plugin
             template <typename... Args>
             Handle& make_handle(const std::string& name, Args&&... args)
             {
-                if (name_to_id.count(name) == 0)
+                if (_name_to_id_.count(name) == 0)
                 {
-                    int32_t id = static_cast<int32_t>(id_to_handle.size());
+                    int32_t id = static_cast<int32_t>(_id_to_handle_.size());
 
-                    id_to_handle.emplace_back(std::forward<Args>(args)...);
+                    _id_to_handle_.emplace_back(std::forward<Args>(args)...);
 
-                    name_to_id[name] = id;
+                    _name_to_id_[name] = id;
                 }
 
-                return id_to_handle[name_to_id[name]];
+                return _id_to_handle_[_name_to_id_[name]];
             }
 
             Handle& get_handle(const std::string& name)
             {
-                return id_to_handle[name_to_id.at(name)];
+                return _id_to_handle_[_name_to_id_.at(name)];
             }
 
             const std::vector<Handle>& get_handles() const
             {
-                return id_to_handle;
+                return _id_to_handle_;
             }
 
         public:
@@ -97,9 +97,9 @@ namespace plugin
         public:
             int32_t add_counter(const std::string& event)
             {
-                auto id = name_to_id.at(event);
+                auto id = _name_to_id_.at(event);
 
-                Plugin::instance().add_counter(id_to_handle[id]);
+                Plugin::instance().add_counter(_id_to_handle_[id]);
 
                 return id;
             }
@@ -107,24 +107,24 @@ namespace plugin
             template <typename C>
             void get_all_values(int32_t id, C& cursor)
             {
-                Plugin::instance().get_all_values(id_to_handle[id], cursor);
+                Plugin::instance().get_all_values(_id_to_handle_[id], cursor);
             }
 
             template <typename P>
             void get_current_value(int32_t id, P& proxy)
             {
-                Plugin::instance().get_current_value(id_to_handle[id], proxy);
+                Plugin::instance().get_current_value(_id_to_handle_[id], proxy);
             }
 
             template <typename P>
             void get_optional_value(int32_t id, P& proxy)
             {
-                Plugin::instance().get_optional_value(id_to_handle[id], proxy);
+                Plugin::instance().get_optional_value(_id_to_handle_[id], proxy);
             }
 
         private:
-            std::map<std::string, int32_t> name_to_id;
-            std::vector<Handle> id_to_handle;
+            std::map<std::string, int32_t> _name_to_id_;
+            std::vector<Handle> _id_to_handle_;
         };
     }
 }

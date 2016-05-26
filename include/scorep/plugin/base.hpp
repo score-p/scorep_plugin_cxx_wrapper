@@ -102,8 +102,8 @@ namespace plugin
     public:
         static Child& instance()
         {
-            assert(instance_);
-            return *instance_;
+            assert(_instance_);
+            return *_instance_;
         }
 
         static SCOREP_Metric_Plugin_MetricProperties* get_event_info_handler(char* name)
@@ -177,7 +177,7 @@ namespace plugin
                 auto level = severity_from_string(log_verbose, nitro::log::severity_level::info);
                 scorep::plugin::log::set_min_severity_level(level);
 
-                instance_.reset(new Child());
+                _instance_.reset(new Child());
 
                 return 0;
             }
@@ -191,7 +191,7 @@ namespace plugin
 
         static void finalize_handler()
         {
-            Child::instance_.reset(nullptr);
+            Child::_instance_.reset(nullptr);
         }
 
         static SCOREP_Metric_Plugin_Info get_info()
@@ -218,11 +218,11 @@ namespace plugin
         }
 
     private:
-        static std::unique_ptr<Child> instance_;
+        static std::unique_ptr<Child> _instance_;
     };
 
     template <typename Child, template <typename T, typename Policies> class... Args>
-    std::unique_ptr<Child> base<Child, Args...>::instance_;
+    std::unique_ptr<Child> base<Child, Args...>::_instance_;
 }
 }
 

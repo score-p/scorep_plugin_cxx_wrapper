@@ -181,7 +181,7 @@ namespace plugin
                     {
                         if (is_responsible)
                         {
-                            Plugin::instance().async_time_begin =
+                            Plugin::instance()._async_time_begin_ =
                                 scorep::chrono::measurement_clock::now();
                             Plugin::instance().start();
                         }
@@ -194,7 +194,7 @@ namespace plugin
                         if (is_responsible)
                         {
                             Plugin::instance().stop();
-                            Plugin::instance().async_time_end =
+                            Plugin::instance()._async_time_end_ =
                                 scorep::chrono::measurement_clock::now();
                         }
                     }
@@ -216,8 +216,8 @@ namespace plugin
                     //       NOT be allocated with new (or freed with delete).
                     *tvlist = nullptr;
 
-                    cursor c(tvlist, Plugin::instance().async_time_begin,
-                             Plugin::instance().async_time_end);
+                    cursor c(tvlist, Plugin::instance()._async_time_begin_,
+                             Plugin::instance()._async_time_end_);
 
                     static_cast<typename traits::static_polymorph_resolve<Plugin, Policies>::type*>(
                         &Plugin::instance())
@@ -239,8 +239,8 @@ namespace plugin
                 }
             }
 
-            scorep::chrono::ticks async_time_begin;
-            scorep::chrono::ticks async_time_end;
+            scorep::chrono::ticks _async_time_begin_;
+            scorep::chrono::ticks _async_time_end_;
         };
     }
 }
