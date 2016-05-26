@@ -1,10 +1,31 @@
 /*
+ * Copyright (c) 2015-2016, Technische Universität Dresden, Germany
+ * All rights reserved.
  *
- *  c_abstraction_test,
- *  a c++ plugin intereface for Score-P plugins.
- *  Copyright (C) 2015 TU Dresden, ZIH
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
+ * 1. Redistributions of source code must retain the above copyright notice, this list of conditions
+ *    and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice, this list of
+ *    conditions and the following disclaimer in the documentation and/or other materials provided
+ *    with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its contributors may be used to
+ *    endorse or promote products derived from this software without specific prior written
+ *    permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 #ifndef INCLUDE_SCOREP_PLUGIN_TRAITS_SPR_HPP
 #define INCLUDE_SCOREP_PLUGIN_TRAITS_SPR_HPP
 
@@ -40,8 +61,7 @@ namespace plugin
             };
 
             template <typename T>
-            struct has_typedef_handle_type<T, void_t<typename T::handle_type>>
-                : std::true_type
+            struct has_typedef_handle_type<T, void_t<typename T::handle_type>> : std::true_type
             {
             };
             // ---!>
@@ -52,26 +72,22 @@ namespace plugin
             // handle_type, which it only has, if it uses the object_id policy.
             // All in all, that may be a bit redundant. Future self, have fun
             // fixing that :-P
-            template <bool, typename Plugin,
-                      template <typename, typename> class Policy>
+            template <bool, typename Plugin, template <typename, typename> class Policy>
             class meta_is_same
             {
             public:
                 const static bool value = false;
             };
 
-            template <typename Plugin,
-                      template <typename, typename> class Policy>
+            template <typename Plugin, template <typename, typename> class Policy>
             class meta_is_same<true, Plugin, Policy>
             {
                 template <typename P1, typename P2>
-                using tmp_oid =
-                    policy::object_id<typename Plugin::handle_type, P1, P2>;
+                using tmp_oid = policy::object_id<typename Plugin::handle_type, P1, P2>;
 
             public:
-                const static bool value =
-                    std::is_same<Policy<void, traits::meta_list<>>,
-                                 tmp_oid<void, traits::meta_list<>>>::value;
+                const static bool value = std::is_same<Policy<void, traits::meta_list<>>,
+                                                       tmp_oid<void, traits::meta_list<>>>::value;
             };
             // ---!>
 
@@ -81,19 +97,16 @@ namespace plugin
             template <typename Plugin, typename Policies>
             class meta_has_oid_policy;
 
-            template <typename Plugin,
-                      template <typename, typename> class FirstPolicy,
+            template <typename Plugin, template <typename, typename> class FirstPolicy,
                       template <typename, typename> class... Policies>
-            class meta_has_oid_policy<
-                Plugin, traits::meta_list<FirstPolicy, Policies...>>
+            class meta_has_oid_policy<Plugin, traits::meta_list<FirstPolicy, Policies...>>
             {
 
             public:
                 const static bool value =
                     meta_is_same<has_typedef_handle_type<Plugin>::value, Plugin,
                                  FirstPolicy>::value ||
-                    meta_has_oid_policy<Plugin,
-                                        traits::meta_list<Policies...>>::value;
+                    meta_has_oid_policy<Plugin, traits::meta_list<Policies...>>::value;
             };
 
             template <typename Plugin>
@@ -111,8 +124,7 @@ namespace plugin
             class static_polymorph_resolve_dispatch
             {
             public:
-                using type = policy::object_id<typename Plugin::handle_type,
-                                               Plugin, Policies>;
+                using type = policy::object_id<typename Plugin::handle_type, Plugin, Policies>;
             };
 
             template <typename Plugin, typename Policies>
@@ -132,8 +144,7 @@ namespace plugin
         {
         public:
             using type = typename detail::static_polymorph_resolve_dispatch<
-                Plugin, Policies,
-                detail::meta_has_oid_policy<Plugin, Policies>::value>::type;
+                Plugin, Policies, detail::meta_has_oid_policy<Plugin, Policies>::value>::type;
         };
     }
 }

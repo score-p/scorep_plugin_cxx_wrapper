@@ -26,12 +26,33 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef INCLUDE_SCOREP_PLUGIN_PLUGIN
-#define INCLUDE_SCOREP_PLUGIN_PLUGIN
+#ifndef INCLUDE_NITRO_LOG_SINK_STDOUT_HPP
+#define INCLUDE_NITRO_LOG_SINK_STDOUT_HPP
 
-#include <scorep/chrono/chrono.hpp>
-#include <scorep/plugin/base.hpp>
-#include <scorep/plugin/log.hpp>
-#include <scorep/plugin/policy/policies.hpp>
+#include <iostream>
+#include <mutex>
+#include <string>
 
-#endif // INCLUDE_SCOREP_PLUGIN_PLUGIN
+namespace nitro
+{
+namespace log
+{
+    namespace sink
+    {
+        static std::mutex stderr_mutex;
+
+        class stderr
+        {
+        public:
+            void sink(std::string formatted_record)
+            {
+                std::lock_guard<std::mutex> my_lock(stdout_mutex);
+
+                std::cerr << formatted_record << std::endl;
+            }
+        };
+    }
+}
+} // namespace nitro::log::sink
+
+#endif // INCLUDE_NITRO_LOG_SINK_STDOUT_HPP
