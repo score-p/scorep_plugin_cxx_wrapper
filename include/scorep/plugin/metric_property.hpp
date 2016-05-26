@@ -43,9 +43,7 @@ namespace plugin
         using self = metric_property;
 
     public:
-        metric_property() = default;
-        metric_property(const std::string& name, const std::string& description,
-                        const std::string& unit)
+        metric_property(std::string name, std::string description = "", std::string unit = "")
         : name(name), description(description), unit(unit)
         {
         }
