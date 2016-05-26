@@ -61,7 +61,7 @@ class sine_plugin : public scorep::plugin::base<sine_plugin, spp::per_thread, sp
 public:
     // You don't have to do anything in this method, but it tells the plugin
     // that this metric will indeed be used
-    void add_counter(sine_metric& m)
+    void add_metric(sine_metric& m)
     {
         logging::info() << "adding sine metric with interval " << m.interval;
     }
@@ -80,9 +80,9 @@ public:
 
     // Convert a named metric (may contain wildcards or so) to a vector of
     // actual metrics (may have a different name)
-    std::vector<scorep::plugin::metric_property> get_event_info(const std::string& name)
+    std::vector<scorep::plugin::metric_property> get_metric_properties(const std::string& name)
     {
-        logging::info() << "get event info called with: " << name;
+        logging::info() << "get metric properties called with: " << name;
 
         if (name == "long")
         {

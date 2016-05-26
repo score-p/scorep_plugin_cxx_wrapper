@@ -82,12 +82,12 @@ public:
 #endif
     }
 
-    void add_counter(foo& f)
+    void add_metric(foo& f)
     {
-        logging::info() << "add counter called with: " << f.name;
+        logging::info() << "add metric called with: " << f.name;
     }
 
-    std::vector<scorep::plugin::metric_property> get_event_info(const std::string& event)
+    std::vector<scorep::plugin::metric_property> get_metric_properties(const std::string& event)
     {
         logging::info() << "get event info called with: " << event;
 

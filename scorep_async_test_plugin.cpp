@@ -77,18 +77,18 @@ public:
 #endif
     }
 
-    int32_t add_counter(const std::string& event)
+    int32_t add_metric(const std::string& event)
     {
-        logging::info() << "add counter called with: " << event;
+        logging::info() << "add metric called with: " << event;
 
         begin = scorep::chrono::measurement_clock::now();
 
         return 42;
     }
 
-    std::vector<scorep::plugin::metric_property> get_event_info(const std::string& event)
+    std::vector<scorep::plugin::metric_property> get_metric_properties(const std::string& event)
     {
-        logging::info() << "get event info called with: " << event;
+        logging::info() << "get metric properties called with: " << event;
 
         return { scorep::plugin::metric_property(event, "blablubfasel", "GigaUltraFoo")
                      .absolute_point()
