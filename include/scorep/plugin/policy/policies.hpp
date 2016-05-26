@@ -29,7 +29,6 @@
 #ifndef INCLUDE_SCOREP_PLUGIN_POLICY_POLICIES_HPP
 #define INCLUDE_SCOREP_PLUGIN_POLICY_POLICIES_HPP
 
-#include <scorep/plugin/policy/initialize.hpp>
 #include <scorep/plugin/policy/scorep_clock.hpp>
 
 #include <scorep/plugin/policy/post_mortem.hpp>

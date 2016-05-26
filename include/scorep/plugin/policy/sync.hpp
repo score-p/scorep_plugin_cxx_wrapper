@@ -60,6 +60,7 @@ namespace plugin
                     Test,
                     "The sync policy requires the definition of the method"
                     "`template <typename Proxy> bool get_optional_value(std::int32_t, Proxy&)`");
+                return false;
             }
 
             static bool get_optional_value_handler(std::int32_t id, uint64_t* value)

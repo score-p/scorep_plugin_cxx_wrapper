@@ -46,8 +46,6 @@ namespace plugin
         class sync_strict;
 
         template <typename T, typename Policies>
-        class with_initialize;
-        template <typename T, typename Policies>
         class scorep_clock;
         template <typename Handle, typename T, typename Policies>
         class object_id;

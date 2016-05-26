@@ -116,7 +116,7 @@ namespace plugin
             }
 
         public:
-            int32_t add_counter(const std::string& event)
+            int32_t add_metric(const std::string& event)
             {
                 auto id = _name_to_id_.at(event);
 

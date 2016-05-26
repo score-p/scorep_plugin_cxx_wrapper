@@ -40,20 +40,28 @@ namespace plugin
 {
     namespace policy
     {
+        namespace detail
+        {
+            template <typename Plugin, typename Policies>
+            class synchronize_dummy
+            {
+                template <bool Test = false>
+                void synchronize(bool, SCOREP_MetricSynchronizationMode)
+                {
+                    static_assert(Test,
+                                  "The synchronize policy requires the definition of the method"
+                                  "`void synchronize(bool, SCOREP_MetricSynchronizationMode)`");
+                }
+            };
+        }
+
         template <typename Plugin, typename Policies>
-        class synchronize
+        class synchronize : private detail::synchronize_dummy<Plugin, Policies>
         {
         public:
             static void build_info(SCOREP_Metric_Plugin_Info& info)
             {
                 info.synchronize = synchronize_handler;
-            }
-
-            template <bool Test = false>
-            void synchronize(bool, SCOREP_MetricSynchronizationMode)
-            {
-                static_assert(Test, "The synchronize policy requires the definition of the method"
-                                    "`void synchronize(bool, SCOREP_MetricSynchronizationMode)`");
             }
 
             static void synchronize_handler(bool is_responsible,
