@@ -85,10 +85,10 @@ namespace plugin
 
         public:
             template <bool Test = false>
-            void add_counter(Handle&)
+            void add_metric(Handle&)
             {
                 static_assert(Test, "The object_id policy requires the definition of the method"
-                                    "`void add_counter(Handle&)`");
+                                    "`void add_metric(Handle&)`");
             }
 
             template <typename Cursor, bool Test = false>
@@ -120,7 +120,7 @@ namespace plugin
             {
                 auto id = _name_to_id_.at(event);
 
-                Plugin::instance().add_counter(_id_to_handle_[id]);
+                Plugin::instance().add_metric(_id_to_handle_[id]);
 
                 return id;
             }

@@ -103,19 +103,19 @@ namespace plugin
             "synchronize functionality.");
 
         template <bool Test = false>
-        std::vector<scorep::plugin::metric_property> get_event_info(const std::string&)
+        std::vector<scorep::plugin::metric_property> get_metric_properties(const std::string&)
         {
             static_assert(Test, "The base plugin requires the definition of the method "
                                 "`std::vector<scorep::plugin::metric_property> "
-                                "get_event_info(const std::string&)`");
+                                "get_metric_properties(const std::string&)`");
             return {};
         }
 
         template <bool Test = false>
-        int32_t add_counter(const std::string&)
+        int32_t add_metric(const std::string&)
         {
             static_assert(Test, "The base plugin requires the definition of the method "
-                                "`int32_t add_counter(const std::string&)`");
+                                "`int32_t add_metric(const std::string&)`");
 
             return 0;
         }
@@ -133,7 +133,7 @@ namespace plugin
 
             try
             {
-                properties = Child::instance().get_event_info(std::string(name));
+                properties = Child::instance().get_metric_properties(std::string(name));
             }
             catch (std::exception& e)
             {
@@ -173,7 +173,7 @@ namespace plugin
             {
                 return static_cast<typename traits::static_polymorph_resolve<
                     Child, traits::meta_list<Args...>>::type*>(&Child::instance())
-                    ->add_counter(std::string(event));
+                    ->add_metric(std::string(event));
             }
             catch (std::exception& e)
             {
