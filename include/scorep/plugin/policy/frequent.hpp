@@ -26,8 +26,12 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef INCLUDE_SCOREP_PLUGIN_POLICY_FWD_HPP
-#define INCLUDE_SCOREP_PLUGIN_POLICY_FWD_HPP
+#ifndef INCLUDE_SCOREP_PLUGIN_POLICY_FREQUENT_HPP
+#define INCLUDE_SCOREP_PLUGIN_POLICY_FREQUENT_HPP
+
+#include <scorep/plugin/interface.hpp>
+
+#include <cstdint>
 
 namespace scorep
 {
@@ -35,36 +39,26 @@ namespace plugin
 {
     namespace policy
     {
-        template <typename T, typename Policies>
-        class post_mortem;
-        template <typename T, typename Policies>
-        class frequent;
+        template <typename Plugin, typename Policies>
+        class frequent
+        {
+            template <bool Test = false>
+            static std::uint64_t get_metric_gather_interval()
+            {
+                static_assert(Test, "The frequent policy requires the definition of the method"
+                                    "`static std::uint64_t get_metric_gather_interval()`");
 
-        template <typename T, typename Policies>
-        class async;
-        template <typename T, typename Policies>
-        class sync;
-        template <typename T, typename Policies>
-        class sync_strict;
+                return 0;
+            }
 
-        template <typename T, typename Policies>
-        class scorep_clock;
-        template <typename Handle, typename T, typename Policies>
-        class object_id;
-
-        template <typename T, typename Policies>
-        class once;
-        template <typename T, typename Policies>
-        class per_host;
-        template <typename T, typename Policies>
-        class per_process;
-        template <typename T, typename Policies>
-        class per_thread;
-
-        template <typename T, typename Policies>
-        class synchronize;
+        public:
+            static void build_info(SCOREP_Metric_Plugin_Info& info)
+            {
+                info.delta_t = Plugin::get_metric_gather_interval();
+            }
+        };
     }
 }
 }
 
-#endif // INCLUDE_SCOREP_PLUGIN_POLICY_FWD_HPP
+#endif // INCLUDE_SCOREP_PLUGIN_POLICY_FREQUENT_HPP

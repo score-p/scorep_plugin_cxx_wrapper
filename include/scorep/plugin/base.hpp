@@ -78,6 +78,21 @@ namespace plugin
             "The post_mortem policy depends on the async policy, which is missing in the plugin!");
 
         static_assert(
+            !traits::has_policy<policy::frequent<Child, traits::meta_list<Args...>>,
+                                traits::list<Args<Child, traits::meta_list<Args...>>...>>::value ||
+                traits::has_all_of<
+                    traits::list<policy::async<Child, traits::meta_list<Args...>>,
+                                 policy::frequent<Child, traits::meta_list<Args...>>>,
+                    traits::list<Args<Child, traits::meta_list<Args...>>...>>::value,
+            "The frequent policy depends on the async policy, which is missing in the plugin!");
+
+        static_assert(
+            !traits::has_all_of<traits::list<policy::post_mortem<Child, traits::meta_list<Args...>>,
+                                             policy::frequent<Child, traits::meta_list<Args...>>>,
+                                traits::list<Args<Child, traits::meta_list<Args...>>...>>::value,
+            "The frequent policy and post_mortem policy conflict with each other!");
+
+        static_assert(
             !traits::has_policy<policy::async<Child, traits::meta_list<Args...>>,
                                 traits::list<Args<Child, traits::meta_list<Args...>>...>>::value ||
                 traits::has_all_of<
@@ -99,7 +114,7 @@ namespace plugin
             !traits::has_all_of<traits::list<policy::synchronize<Child, traits::meta_list<Args...>>,
                                              policy::async<Child, traits::meta_list<Args...>>>,
                                 traits::list<Args<Child, traits::meta_list<Args...>>...>>::value,
-            "A plugin cannot have both async and synchroinze policies. async comes with implicit "
+            "A plugin cannot have both async and synchronize policies. async comes with implicit "
             "synchronize functionality.");
 
         template <bool Test = false>

@@ -31,6 +31,7 @@
 
 #include <scorep/plugin/policy/scorep_clock.hpp>
 
+#include <scorep/plugin/policy/frequent.hpp>
 #include <scorep/plugin/policy/post_mortem.hpp>
 
 #include <scorep/plugin/policy/async.hpp>
