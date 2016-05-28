@@ -56,7 +56,7 @@ namespace plugin
                 cursor() = delete;
                 cursor(const cursor&) = delete;
 
-                cursor(SCOREP_MetricTimeValuePair**& tvlist, scorep::chrono::ticks begin,
+                cursor(SCOREP_MetricTimeValuePair*& tvlist, scorep::chrono::ticks begin,
                        scorep::chrono::ticks end)
                 : tvlist(tvlist), size_(0), capacity_(0), begin(begin), end(end)
                 {
@@ -64,8 +64,8 @@ namespace plugin
 
                 void resize(std::size_t new_size)
                 {
+                    memory::resize_c_memory(tvlist, capacity_);
                     capacity_ = new_size;
-                    memory::resize_c_memory(*tvlist, capacity_);
                 }
 
                 template <typename T>
@@ -110,8 +110,8 @@ namespace plugin
 
                 void store(chrono::ticks t, std::uint64_t v) noexcept
                 {
-                    (*tvlist)[size_].timestamp = t.count();
-                    (*tvlist)[size_].value = v;
+                    tvlist[size_].timestamp = t.count();
+                    tvlist[size_].value = v;
 
                     size_++;
                 }
@@ -147,7 +147,7 @@ namespace plugin
                 }
 
             private:
-                SCOREP_MetricTimeValuePair**& tvlist;
+                SCOREP_MetricTimeValuePair*& tvlist;
                 std::size_t size_;
                 std::size_t capacity_;
                 scorep::chrono::ticks begin;
@@ -250,10 +250,10 @@ namespace plugin
                 }
                 catch (std::exception& e)
                 {
-                    if (tvlist)
+                    if (*tvlist)
                     {
-                        free(tvlist);
-                        tvlist = nullptr;
+                        free(*tvlist);
+                        *tvlist = nullptr;
                     }
                     Plugin::instance().print_uncaught_exception(e);
                     return 0;

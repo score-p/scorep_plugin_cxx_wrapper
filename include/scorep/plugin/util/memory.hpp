@@ -69,9 +69,9 @@ namespace memory
     template <typename T>
     void resize_c_memory(T*& p, std::size_t count)
     {
-        p = static_cast<T*>(realloc(p, sizeof(T) * count));
+        T* new_ptr = static_cast<T*>(realloc(p, sizeof(T) * count));
 
-        if (p == nullptr && count > 0)
+        if (new_ptr == nullptr && count > 0)
         {
             // Note: It might be not as smart as it seems, to work with non-static strings here, as
             //       if the "malloc" fails, constructing a string may also fail. However, there
@@ -79,6 +79,8 @@ namespace memory
             throw exception::memory("Couldn't allocate memory of size "s +
                                     std::to_string(count * sizeof(T)));
         }
+
+        p = new_ptr;
     }
 }
 }
