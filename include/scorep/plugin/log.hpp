@@ -51,18 +51,18 @@ namespace plugin
         class wtime_attribute
         {
             std::uint64_t my_timestamp;
-            static uint64_t (*wtime_)(void);
+            using clock_pointer_t = std::uint64_t (*)();
 
         public:
             wtime_attribute()
             {
-                if (wtime_ == nullptr)
+                if (wtime_ptr() == nullptr)
                 {
                     my_timestamp = 0;
                 }
                 else
                 {
-                    my_timestamp = wtime_();
+                    my_timestamp = wtime_ptr()();
                 }
             }
 
@@ -71,13 +71,12 @@ namespace plugin
                 return my_timestamp;
             }
 
-            static void set_wtime(uint64_t (*clock)(void))
+            static clock_pointer_t& wtime_ptr()
             {
-                wtime_ = clock;
+                static uint64_t (*clock)(void);
+                return clock;
             }
         };
-
-        uint64_t (*wtime_attribute::wtime_)(void);
 
         inline std::string& plugin_name()
         {
