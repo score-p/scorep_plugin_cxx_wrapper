@@ -237,7 +237,7 @@ namespace plugin
                     //       NOT be allocated with new (or freed with delete).
                     *tvlist = nullptr;
 
-                    cursor c(tvlist, Plugin::instance()._async_time_begin_,
+                    cursor c(*tvlist, Plugin::instance()._async_time_begin_,
                              Plugin::instance()._async_time_end_);
 
                     static_cast<typename traits::static_polymorph_resolve<Plugin, Policies>::type*>(
