@@ -54,12 +54,12 @@ namespace plugin
             }
 
             template <typename Proxy, bool Test = false>
-            bool get_optional_value(std::int32_t, Proxy&)
+            void get_optional_value(std::int32_t, Proxy&)
             {
                 static_assert(
                     Test,
                     "The sync policy requires the definition of the method"
-                    "`template <typename Proxy> bool get_optional_value(std::int32_t, Proxy&)`");
+                    "`template <typename Proxy> void get_optional_value(std::int32_t, Proxy&)`");
                 return false;
             }
 
