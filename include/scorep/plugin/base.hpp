@@ -117,6 +117,7 @@ namespace plugin
             "A plugin cannot have both async and synchronize policies. async comes with implicit "
             "synchronize functionality.");
 
+    public:
         template <bool Test = false>
         std::vector<scorep::plugin::metric_property> get_metric_properties(const std::string&)
         {
@@ -133,6 +134,37 @@ namespace plugin
                                 "`int32_t add_metric(const std::string&)`");
 
             return 0;
+        }
+
+        template <typename Handle, bool Test = false>
+        void add_metric(Handle&)
+        {
+            static_assert(Test, "The object_id policy requires the definition of the method "
+                                "`void add_metric(Handle&)`");
+        }
+
+        template <typename Handle, typename Cursor, bool Test = false>
+        void get_all_values(Handle&, Cursor&)
+        {
+            static_assert(Test,
+                          "The object_id policy requires the definition of the method "
+                          "`template <typename Cursor> void get_all_values(Handle&, Cursor&)`");
+        }
+
+        template <typename Handle, typename Proxy, bool Test = false>
+        void get_current_value(Handle&, Proxy&)
+        {
+            static_assert(Test,
+                          "The object_id policy requires the definition of the method "
+                          "`template <typename Proxy> void get_current_value(Handle&, Proxy&)`");
+        }
+
+        template <typename Handle, typename Proxy, bool Test = false>
+        void get_optional_value(Handle&, Proxy&)
+        {
+            static_assert(Test,
+                          "The object_id policy requires the definition of the method "
+                          "`template <typename Proxy> void get_optional_value(Handle&, Proxy&)`");
         }
 
     public:
