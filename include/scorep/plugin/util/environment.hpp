@@ -77,10 +77,15 @@ namespace environment
         return std::string("SCOREP_METRIC_") + upper_name + "_";
     }
 
+    inline std::string get_variable_name(const std::string& name)
+    {
+        return plugin_prefix() + name;
+    }
+
     inline std::string get_variable(const std::string& name,
                                     const std::string& default_ = std::string(""))
     {
-        return get_global_variable(plugin_prefix() + name, default_);
+        return get_global_variable(get_variable_name(name), default_);
     }
 }
 }
