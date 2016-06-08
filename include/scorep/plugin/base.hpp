@@ -45,6 +45,7 @@
 #include <scorep/plugin/log.hpp>
 #include <scorep/plugin/util/environment.hpp>
 #include <scorep/plugin/util/memory.hpp>
+#include <scorep/plugin/util/plugin.hpp>
 
 #include <cassert>
 #include <cstring>
@@ -241,7 +242,7 @@ namespace plugin
             // initialize class instance and catch possible exceptions
             try
             {
-                auto log_verbose = environment::get_variable("VERBOSE", "WARN");
+                auto log_verbose = environment_variable::get("VERBOSE", "WARN");
                 auto level = severity_from_string(log_verbose, nitro::log::severity_level::info);
                 scorep::plugin::log::set_min_severity_level(level);
 
@@ -290,8 +291,7 @@ namespace plugin
 #define SCOREP_METRIC_PLUGIN_CLASS(CLASS_NAME, PLUGIN_NAME)                                        \
     SCOREP_METRIC_PLUGIN_ENTRY(CLASS_NAME)                                                         \
     {                                                                                              \
-        scorep::plugin::log::plugin_name() = PLUGIN_NAME;                                          \
-        scorep::environment::plugin_name() = PLUGIN_NAME;                                          \
+        scorep::plugin::name() = PLUGIN_NAME;                                                      \
         return CLASS_NAME::get_info();                                                             \
     }
 

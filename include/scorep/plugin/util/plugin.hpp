@@ -26,51 +26,32 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef INCLUDE_SCOREP_PLUGIN_UTIL_ENVIRONMENT_HPP
-#define INCLUDE_SCOREP_PLUGIN_UTIL_ENVIRONMENT_HPP
+#ifndef INCLUDE_SCOREP_PLUGIN_UTIL_PLUGIN_HPP
+#define INCLUDE_SCOREP_PLUGIN_UTIL_PLUGIN_HPP
 
-#include <scorep/plugin/log.hpp>
-#include <scorep/plugin/util/plugin.hpp>
-
-#include <mutex>
 #include <string>
 
 namespace scorep
 {
-namespace environment_variable
+namespace plugin
 {
-
-    inline std::string name(const std::string& name)
+    inline std::string& name()
     {
-        return plugin::prefix() + name;
+        static std::string name_;
+        return name_;
     }
 
-    inline std::string get(std::string name, std::string default_ = "", bool global = false)
+    inline std::string prefix()
     {
-        static std::mutex getenv_mutex;
+        std::string upper_name = plugin::name();
 
-        scorep::plugin::logging::debug() << "Access to environment variable '" << name << "'";
+        // this only works for ANSI plugin names
+        for (auto& c : upper_name)
+            c = toupper(c);
 
-        if (!global)
-        {
-            name = environment_variable::name(name);
-        }
-
-        // Note: If the application or the plugin uses an exotic thread paradigm, this lock may not
-        //       be sufficient. However, in that case, all you can do is sacrifice a goat, prey and
-        //       hope for the best.
-        std::lock_guard<std::mutex> my_lock(getenv_mutex);
-
-        char* tmp = getenv(name.c_str());
-
-        if (tmp == nullptr)
-        {
-            return default_;
-        }
-
-        return std::string(tmp);
+        return std::string("SCOREP_METRIC_") + upper_name + "_";
     }
 }
 }
 
-#endif // INCLUDE_SCOREP_PLUGIN_UTIL_ENVIRONMENT_HPP
+#endif // INCLUDE_SCOREP_PLUGIN_UTIL_PLUGIN_HPP

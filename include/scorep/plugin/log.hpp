@@ -41,6 +41,8 @@
 #include <nitro/log/filter/and_filter.hpp>
 #include <nitro/log/filter/severity_filter.hpp>
 
+#include <scorep/plugin/util/plugin.hpp>
+
 namespace scorep
 {
 namespace plugin
@@ -78,13 +80,6 @@ namespace plugin
             }
         };
 
-        inline std::string& plugin_name()
-        {
-            static std::string name_;
-
-            return name_;
-        }
-
         namespace detail
         {
 
@@ -101,8 +96,8 @@ namespace plugin
                 {
                     std::stringstream s;
 
-                    s << "Score-P " << plugin_name() << " plugin: [" << r.hostname() << "]["
-                      << r.wtime() << "][" << r.severity() << "]: " << r.message();
+                    s << "Score-P " << scorep::plugin::name() << " plugin: [" << r.hostname()
+                      << "][" << r.wtime() << "][" << r.severity() << "]: " << r.message();
 
                     return s.str();
                 }
