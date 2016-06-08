@@ -176,11 +176,10 @@ namespace plugin
                                     "`void stop()`");
             }
 
-            template <bool Test = false>
             void synchronize(bool, SCOREP_MetricSynchronizationMode)
             {
-                static_assert(Test, "The async policy requires the definition of the method"
-                                    "`void synchronize(bool, SCOREP_MetricSynchronizationMode)`");
+                logging::debug() << "Using default implementation of "
+                                 << "`void synchronize(bool, SCOREP_MetricSynchronizationMode)`";
             }
 
             template <typename Cursor, bool Test = false>
