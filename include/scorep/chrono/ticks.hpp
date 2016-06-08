@@ -38,6 +38,9 @@ namespace chrono
     class ticks
     {
     public:
+        using time_point = ticks;
+        using duration = ticks;
+
         ticks() : count_(0)
         {
         }

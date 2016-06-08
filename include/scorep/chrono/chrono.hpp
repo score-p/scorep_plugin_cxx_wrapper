@@ -31,5 +31,6 @@
 
 #include <scorep/chrono/measurement_clock.hpp>
 #include <scorep/chrono/ticks.hpp>
+#include <scorep/chrono/time_convert.hpp>
 
 #endif // INCLUDE_SCOREP_CHRONO_CHRONO_HPP

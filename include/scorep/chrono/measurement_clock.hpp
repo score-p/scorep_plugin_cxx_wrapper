@@ -41,6 +41,8 @@ namespace chrono
         using clock_pointer_t = std::uint64_t (*)();
 
     public:
+        using time_point = scorep::chrono::ticks;
+
         static const bool is_steady = true;
 
         static scorep::chrono::ticks now() noexcept
