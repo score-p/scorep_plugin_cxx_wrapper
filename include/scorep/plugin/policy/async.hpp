@@ -64,7 +64,7 @@ namespace plugin
 
                 void resize(std::size_t new_size)
                 {
-                    memory::resize_c_memory(tvlist, capacity_);
+                    memory::resize_c_memory(tvlist, new_size);
                     capacity_ = new_size;
                 }
 
