@@ -69,6 +69,10 @@ namespace plugin
 
                     _name_to_id_[name] = id;
                 }
+                else
+                {
+                    scorep::exception::raise("Trying to create a second handle for ", name);
+                }
 
                 return _id_to_handle_[_name_to_id_[name]];
             }
