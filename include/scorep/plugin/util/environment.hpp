@@ -49,12 +49,12 @@ namespace environment_variable
     {
         static std::mutex getenv_mutex;
 
-        scorep::plugin::logging::debug() << "Access to environment variable '" << name << "'";
-
         if (!global)
         {
             name = environment_variable::name(name);
         }
+
+        scorep::plugin::logging::debug() << "Access to environment variable '" << name << "'";
 
         // Note: If the application or the plugin uses an exotic thread paradigm, this lock may not
         //       be sufficient. However, in that case, all you can do is sacrifice a goat, prey and

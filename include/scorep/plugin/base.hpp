@@ -242,6 +242,7 @@ namespace plugin
             // initialize class instance and catch possible exceptions
             try
             {
+                scorep::plugin::log::set_min_severity_level(nitro::log::severity_level::info);
                 auto log_verbose = environment_variable::get("VERBOSE", "WARN");
                 auto level = severity_from_string(log_verbose, nitro::log::severity_level::info);
                 scorep::plugin::log::set_min_severity_level(level);
