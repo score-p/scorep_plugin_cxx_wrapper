@@ -34,12 +34,10 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pedantic -Wextra")
 
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/common;${CMAKE_MODULE_PATH}")
 
-find_package(Scorep)
+find_package(Scorep REQUIRED)
 if(SCOREP_FOUND)
     include_directories(${SCOREP_INCLUDE_DIRS})
     link_directories(${SCOREP_LIBRARY_DIRS})
-else()
-    message(SEND_ERROR "Scorep was not found but is required!")
 endif()
 
 include_directories(include)
