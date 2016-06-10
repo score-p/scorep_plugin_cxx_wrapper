@@ -86,6 +86,7 @@ public:
     template <typename C>
     void get_all_values(int32_t id, C& cursor)
     {
+        logging::info() << "get_all_values called with: " << id;
 
         // write the collected data to the cursor.
         for (auto& tvpair : generate_metric_data())
