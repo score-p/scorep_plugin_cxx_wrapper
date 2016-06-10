@@ -46,13 +46,13 @@ namespace plugin
         public:
             matcher(const std::string& pattern)
             {
-                // We need another delimiter because otherwise getline will *not* return an empty
-                // string at the end of line because the * is already consumed by the previous
-                // getline, and getline will set the failbit if no character is consumed
                 std::string pattern_upper(pattern);
                 std::transform(pattern_upper.begin(), pattern_upper.end(), pattern_upper.begin(),
                                ::toupper);
 
+                // We need another delimiter because otherwise getline will *not* return an empty
+                // string at the end of line because the * is already consumed by the previous
+                // getline, and getline will set the failbit if no character is consumed
                 std::stringstream ss(pattern_upper + "*");
                 std::string part;
                 while (std::getline(ss, part, '*'))

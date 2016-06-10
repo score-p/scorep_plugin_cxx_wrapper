@@ -97,8 +97,7 @@ public:
             make_handle(name, 30000000.0);
         }
 
-        // Must use the same name here as for the handle you made earlier... I
-        // think.
+        // Must use the same name here as for the handle you made earlier.
         return { scorep::plugin::metric_property(name, name + " sine curve", "Unit")
                      .absolute_point()
                      .value_double() };
