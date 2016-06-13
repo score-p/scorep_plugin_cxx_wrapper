@@ -177,38 +177,65 @@ namespace plugin
 
         static SCOREP_Metric_Plugin_MetricProperties* get_event_info_handler(char* name)
         {
-            SCOREP_Metric_Plugin_MetricProperties* results;
+            // In order, that the exception handling works, we have to trust on a few things here.
+            // Better we check them!
+            // ps: If you trigger this assertions, good luck boy. I'm out.
+            static_assert(noexcept(std::vector<metric_property>()) == true,
+                          "std::vector::vector() constructor must not throw.");
+            static_assert(noexcept(std::vector<metric_property>().clear()) == true,
+                          "std::vector::clear() must not throw.");
 
+            std::vector<metric_property> properties;
             try
             {
-                std::vector<metric_property> properties =
-                    Child::instance().get_metric_properties(std::string(name));
-
-                results = memory::allocate_c_memory<SCOREP_Metric_Plugin_MetricProperties>(
-                    properties.size() + 1);
-
-                std::size_t i = 0;
-
-                for (auto& prop : properties)
-                {
-                    auto& result = results[i];
-
-                    // FIXME: these strdup() are a possible memory leak :(
-                    result.name = strdup(prop.name.c_str());
-                    result.description = strdup(prop.description.c_str());
-                    result.unit = strdup(prop.unit.c_str());
-
-                    result.mode = prop.mode;
-                    result.value_type = prop.type;
-                    result.base = prop.base;
-                    result.exponent = prop.exponent;
-
-                    i++;
-                }
+                properties = Child::instance().get_metric_properties(std::string(name));
             }
             catch (std::exception& e)
             {
                 print_uncaught_exception(e);
+                properties.clear();
+            }
+
+            SCOREP_Metric_Plugin_MetricProperties* results;
+
+            try
+            {
+                results = memory::allocate_c_memory<SCOREP_Metric_Plugin_MetricProperties>(
+                    properties.size() + 1);
+            }
+            catch (std::exception& e)
+            {
+                // something REALLY bad happend. While trying to allocate the return structure for
+                // scorep, there was thrown an exception. Well, what to do now ?:(
+
+                print_uncaught_exception(e);
+
+                // I know... that is propably the MOST evil thing ever done, but nethertheless,
+                // I have to fucking return something, which looks valid. So here we go. EAT THIS!
+                // Are you frigthened like me, that this ain't thread-safe? Well, at least it always
+                // has the same value. So it might work.
+                static SCOREP_Metric_Plugin_MetricProperties empty;
+                empty.name = nullptr;
+                return &empty;
+            }
+
+            std::size_t i = 0;
+
+            for (auto& prop : properties)
+            {
+                auto& result = results[i];
+
+                // FIXME: These strings are a possible memory leak :( Let's prey Score-P frees them.
+                result.name = strdup(prop.name.c_str());
+                result.description = strdup(prop.description.c_str());
+                result.unit = strdup(prop.unit.c_str());
+
+                result.mode = prop.mode;
+                result.value_type = prop.type;
+                result.base = prop.base;
+                result.exponent = prop.exponent;
+
+                i++;
             }
 
             return results;
