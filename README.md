@@ -24,6 +24,20 @@ To compile this wrapper and thus your plugin, you need:
 
 ### Build settings
 
+The whole wrapper makes heavily use of C++14 features, so you'll need to set the used standard to
+`-std=c++14`.
+
+As the wrapper is header-only, you have to add the folder `include` to the include path of your
+plugin, but you don't need special linker settings.
+
+If you are using CMake, you can use the provided CMake file. e.g. if the wrapper is inside of your project in the folder `scorep`:
+
+```CMake
+include(scorep/ScorepCXXPlugin.cmake)
+```
+
+### Getting started
+
 In order to write a simple plugin with the wrapper, you have to:
 
 ```c++
