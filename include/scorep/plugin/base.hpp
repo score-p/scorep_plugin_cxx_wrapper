@@ -288,7 +288,21 @@ namespace plugin
 
         static void finalize_handler()
         {
-            Child::_instance_.reset(nullptr);
+            try
+            {
+                Child::_instance_.reset(nullptr);
+            }
+            catch (std::exception& e)
+            {
+                print_uncaught_exception(e);
+
+                scorep::plugin::log::logging::fatal() << "WTF?! Some idiot really let the "
+                                                         "destructor throw an exception O.O";
+                scorep::plugin::log::logging::fatal() << "THIS IS SUPER BAD CODE!";
+                scorep::plugin::log::logging::fatal() << "You should REALLY do a git blame on this "
+                                                         "and fucking teach the prospect, how NOT "
+                                                         "to throw in a destructor...";
+            }
         }
 
         static SCOREP_Metric_Plugin_Info get_info()
