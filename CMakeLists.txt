@@ -47,7 +47,7 @@ add_library(async_oid_plugin SHARED scorep_async_object_id_test_plugin.cpp)
 add_library(sine_plugin SHARED scorep_sync_test_plugin.cpp)
 add_library(sine_strict_plugin SHARED scorep_sync_strict_test_plugin.cpp)
 
-install(TARGETS async_plugin LIBRARY DESTINATION lib)
-install(TARGETS async_oid_plugin LIBRARY DESTINATION lib)
-install(TARGETS sine_plugin LIBRARY DESTINATION lib)
-install(TARGETS sine_strict_plugin LIBRARY DESTINATION lib)
+include(CTest)
+
+add_executable(matcher_test tests/matcher_test.cpp)
+add_test(matcher_test matcher_test)
