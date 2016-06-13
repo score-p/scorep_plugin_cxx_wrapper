@@ -48,6 +48,7 @@
 #include <scorep/plugin/util/plugin.hpp>
 
 #include <cassert>
+#include <cstdio>
 #include <cstring>
 #include <memory>
 #include <type_traits>
@@ -257,10 +258,34 @@ namespace plugin
             }
         }
 
-        static void print_uncaught_exception(std::exception& e)
+        static void print_uncaught_exception(std::exception& e) noexcept
         {
-            scorep::plugin::log::logging::fatal() << "Uncaught exception with message:";
-            scorep::plugin::log::logging::fatal() << e.what();
+            try
+            {
+                // that shit actually may throw too, BUT we are already in an exception catch
+                scorep::plugin::log::logging::fatal() << "Uncaught exception with message:";
+                scorep::plugin::log::logging::fatal() << e.what();
+            }
+            catch (...)
+            {
+                // gracefully ignore ALL exceptions
+                // and I can't even tell the user something went wrong, nor I can't do my job,
+                // print the error message.
+                // This here is an uter mess. :'(
+
+                // Let's try a last effort to let the user know, that there went something really
+                // badly wrong.
+                static const char* message = "WARNING: Something went wrong in a metric plugin, "
+                                             "while trying to print an error message.\n"
+                                             "I'm almost out of options at this point.\n"
+                                             "I wish you all the luck with your trace.\n";
+                int res = fputs(message, stderr);
+
+                // I don't care for the result, I'm already falling to death, while being shot and
+                // biten by a deadly snake, a deadly spider and my neighbors pet rat. I'm going to
+                // die anyway. Add these words to the list of famous last words:
+                (void)res;
+            }
         }
 
         static int32_t initialize_handler()
