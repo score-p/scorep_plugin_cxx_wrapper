@@ -177,39 +177,38 @@ namespace plugin
 
         static SCOREP_Metric_Plugin_MetricProperties* get_event_info_handler(char* name)
         {
-            std::vector<metric_property> properties;
+            SCOREP_Metric_Plugin_MetricProperties* results;
 
             try
             {
-                properties = Child::instance().get_metric_properties(std::string(name));
+                std::vector<metric_property> properties =
+                    Child::instance().get_metric_properties(std::string(name));
+
+                results = memory::allocate_c_memory<SCOREP_Metric_Plugin_MetricProperties>(
+                    properties.size() + 1);
+
+                std::size_t i = 0;
+
+                for (auto& prop : properties)
+                {
+                    auto& result = results[i];
+
+                    // FIXME: these strdup() are a possible memory leak :(
+                    result.name = strdup(prop.name.c_str());
+                    result.description = strdup(prop.description.c_str());
+                    result.unit = strdup(prop.unit.c_str());
+
+                    result.mode = prop.mode;
+                    result.value_type = prop.type;
+                    result.base = prop.base;
+                    result.exponent = prop.exponent;
+
+                    i++;
+                }
             }
             catch (std::exception& e)
             {
-                properties.clear();
                 print_uncaught_exception(e);
-            }
-
-            SCOREP_Metric_Plugin_MetricProperties* results =
-                memory::allocate_c_memory<SCOREP_Metric_Plugin_MetricProperties>(properties.size() +
-                                                                                 1);
-
-            std::size_t i = 0;
-
-            for (auto& prop : properties)
-            {
-                auto& result = results[i];
-
-                // FIXME: possible memory leak
-                result.name = strdup(prop.name.c_str());
-                result.description = strdup(prop.description.c_str());
-                result.unit = strdup(prop.unit.c_str());
-
-                result.mode = prop.mode;
-                result.value_type = prop.type;
-                result.base = prop.base;
-                result.exponent = prop.exponent;
-
-                i++;
             }
 
             return results;
@@ -239,14 +238,15 @@ namespace plugin
 
         static int32_t initialize_handler()
         {
-            // initialize class instance and catch possible exceptions
             try
             {
+                // initialy set severity level to info, such that the access to VERBOSE isn't logged
                 scorep::plugin::log::set_min_severity_level(nitro::log::severity_level::info);
                 auto log_verbose = environment_variable::get("VERBOSE", "WARN");
                 auto level = severity_from_string(log_verbose, nitro::log::severity_level::info);
                 scorep::plugin::log::set_min_severity_level(level);
 
+                // construct plugin class
                 _instance_.reset(new Child());
 
                 return 0;
