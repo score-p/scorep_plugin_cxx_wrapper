@@ -43,6 +43,8 @@
 # Note: The CMake Magic requires, that Score-P was found with a FindScorep script.
 #
 
+include(cmake/NitroLog.cmake)
+
 if(SCOREP_FOUND)
     include_directories(SYSTEM ${SCOREP_INCLUDE_DIRS})
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")

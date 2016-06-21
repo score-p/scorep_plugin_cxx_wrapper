@@ -34,6 +34,10 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pedantic -Wextra")
 
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/common;${CMAKE_MODULE_PATH}")
 
+include(common/DefaultBuildType.cmake)
+
+include(cmake/NitroLog.cmake)
+
 find_package(Scorep REQUIRED)
 if(SCOREP_FOUND)
     include_directories(${SCOREP_INCLUDE_DIRS})
