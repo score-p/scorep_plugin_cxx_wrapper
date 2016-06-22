@@ -35,6 +35,10 @@ namespace plugin
 {
     namespace traits
     {
+        // You probably wonder, when to use which list? Easy!
+        // list is used, when the elements are fully instantiated types
+        // meta_list is used, when the elements are only partially instanciated types
+
         template <typename... Elems>
         class list;
 

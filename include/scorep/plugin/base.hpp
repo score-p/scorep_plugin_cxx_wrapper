@@ -180,13 +180,15 @@ namespace plugin
         {
             // In order, that the exception handling works, we have to trust on a few things here.
             // Better we check them!
-            // ps: If you trigger this assertions, good luck boy. I'm out.
+            // ps: If you trigger this assertions, good luck boy. I'm out. And don't use vtti!
             static_assert(noexcept(std::vector<metric_property>()) == true,
                           "std::vector::vector() constructor must not throw.");
             static_assert(noexcept(std::vector<metric_property>().clear()) == true,
                           "std::vector::clear() must not throw.");
 
+            // This call is noexcept(), so it isn't my fault, if it throws >:O (See above)
             std::vector<metric_property> properties;
+
             try
             {
                 properties = Child::instance().get_metric_properties(std::string(name));
@@ -194,6 +196,8 @@ namespace plugin
             catch (std::exception& e)
             {
                 print_uncaught_exception(e);
+
+                // This call is noexcept(), so it isn't my fault, if it throws >:O
                 properties.clear();
             }
 
@@ -211,22 +215,16 @@ namespace plugin
 
                 print_uncaught_exception(e);
 
-                // I know... that is propably the MOST evil thing ever done, but nethertheless,
                 // I have to fucking return something, which looks valid. So here we go. EAT THIS!
-                // Are you frigthened like me, that this ain't thread-safe? Well, at least it always
-                // has the same value. So it might work.
-                static SCOREP_Metric_Plugin_MetricProperties empty;
-                empty.name = nullptr;
-                return &empty;
+                return nullptr;
             }
 
+            // copy properties from C++ to C struct
             std::size_t i = 0;
-
             for (auto& prop : properties)
             {
                 auto& result = results[i];
 
-                // FIXME: These strings are a possible memory leak :( Let's prey Score-P frees them.
                 result.name = strdup(prop.name.c_str());
                 result.description = strdup(prop.description.c_str());
                 result.unit = strdup(prop.unit.c_str());
@@ -246,6 +244,8 @@ namespace plugin
         {
             try
             {
+                // this is an very complicated way to statically call the correct version of
+                // add_metric callback
                 return static_cast<typename traits::static_polymorph_resolve<
                     Child, traits::meta_list<Args...>>::type*>(&Child::instance())
                     ->add_metric(std::string(event));
@@ -298,7 +298,7 @@ namespace plugin
                 auto level = severity_from_string(log_verbose, nitro::log::severity_level::info);
                 scorep::plugin::log::set_min_severity_level(level);
 
-                // construct plugin class
+                // construct plugin instance
                 _instance_.reset(new Child());
 
                 return 0;
@@ -315,6 +315,7 @@ namespace plugin
         {
             try
             {
+                // reset unique_ptr, thus calling destructor of the plugin instance
                 Child::_instance_.reset(nullptr);
             }
             catch (std::exception& e)
@@ -335,13 +336,35 @@ namespace plugin
             SCOREP_Metric_Plugin_Info info;
             memset(&info, 0, sizeof(SCOREP_Metric_Plugin_Info));
 
+            // first, set my own handlers, so policies can overwrite them
             info.plugin_version = SCOREP_METRIC_PLUGIN_VERSION;
-            info.initialize = initialize_handler;
-            info.finalize = finalize_handler;
             info.get_event_info = get_event_info_handler;
             info.add_counter = add_counter_handler;
 
-            traits::build_info<Args<Child, traits::meta_list<Args...>>...>()(info);
+            try
+            {
+                // ask other policies to insert their plugin info
+                traits::build_info<Args<Child, traits::meta_list<Args...>>...>()(info);
+
+                // Check, if initialze and finalize are set by a policy
+                // This might not be bad, but it would be hard to do it correct, so it's not allowed
+                // per definition.
+                if (info.initialize != nullptr || info.finalize != nullptr)
+                {
+                    scorep::plugin::log::logging::error() << "Another policy tried to set its own "
+                                                             "handler for initialize or finalize.";
+                    scorep::plugin::log::logging::error() << "This is not allowed per definition.";
+                    scorep::plugin::log::logging::info() << "Overwriting with the base class ones.";
+                }
+            }
+            catch (std::exception& e)
+            {
+                print_uncaught_exception(e);
+            }
+
+            // override initialize and finalize handlers
+            info.initialize = initialize_handler;
+            info.finalize = finalize_handler;
 
             return info;
         }
@@ -358,7 +381,13 @@ namespace plugin
 #define SCOREP_METRIC_PLUGIN_CLASS(CLASS_NAME, PLUGIN_NAME)                                        \
     SCOREP_METRIC_PLUGIN_ENTRY(CLASS_NAME)                                                         \
     {                                                                                              \
-        scorep::plugin::name() = PLUGIN_NAME;                                                      \
+        try                                                                                        \
+        {                                                                                          \
+            scorep::plugin::name() = PLUGIN_NAME;                                                  \
+        }                                                                                          \
+        catch (std::exception&)                                                                    \
+        {                                                                                          \
+        }                                                                                          \
         return CLASS_NAME::get_info();                                                             \
     }
 
