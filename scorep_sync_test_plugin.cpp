@@ -74,7 +74,7 @@ public:
         auto value = m.value();
         if (value >= 0)
         {
-            proxy.store(value);
+            proxy.write(value);
         }
     }
 
