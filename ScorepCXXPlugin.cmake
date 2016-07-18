@@ -39,7 +39,17 @@
 # include(scorep/ScorepCXXPlugin.cmake)
 #
 
-# inlcude build settings for nitro log 
+# Intialize git submodules if not done already
+file(GLOB SUBMODULE_FILES "${CMAKE_CURRENT_LIST_DIR}/common/*")
+list(LENGTH SUBMODULE_FILES COUNT_COMMON)
+if(${COUNT_COMMON} EQUAL 0)
+    message(STATUS "Initializing git submodule")
+    execute_process(COMMAND "git" "submodule" "init" WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}")
+    execute_process(COMMAND "git" "submodule" "update" WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}")
+endif()
+
+
+# inlcude build settings for nitro log
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/NitroLog.cmake)
 
 # Note: The CMake Magic requires, that Score-P was found with a FindScorep script.

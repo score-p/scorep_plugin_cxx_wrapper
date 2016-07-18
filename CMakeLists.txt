@@ -34,6 +34,15 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pedantic -Wextra")
 
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/common;${CMAKE_MODULE_PATH}")
 
+# Intialize git submodules if not done already
+file(GLOB SUBMODULE_FILES "${CMAKE_SOURCE_DIR}/common/*")
+list(LENGTH SUBMODULE_FILES COUNT_COMMON)
+if(${COUNT_COMMON} EQUAL 0)
+    message(STATUS "Initializing git submodule")
+    execute_process(COMMAND "git" "submodule" "init" WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+    execute_process(COMMAND "git" "submodule" "update" WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endif()
+
 include(common/DefaultBuildType.cmake)
 
 include(cmake/NitroLog.cmake)
