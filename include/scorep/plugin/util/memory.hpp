@@ -36,8 +36,6 @@
 #include <scorep/exception.hpp>
 #include <scorep/plugin/log.hpp>
 
-using namespace std::literals::string_literals;
-
 namespace scorep
 {
 namespace memory
@@ -59,7 +57,7 @@ namespace memory
             // Note: It might be not as smart as it seems, to work with non-static strings here, as
             //       if the "malloc" fails, constructing a string may also fail. However, there
             //       isn't much to do anyways in that case.
-            throw exception::memory("Couldn't allocate memory of size "s +
+            throw exception::memory(std::string("Couldn't allocate memory of size ") +
                                     std::to_string(count * sizeof(T)));
         }
 
@@ -76,7 +74,7 @@ namespace memory
             // Note: It might be not as smart as it seems, to work with non-static strings here, as
             //       if the "malloc" fails, constructing a string may also fail. However, there
             //       isn't much to do anyways in that case.
-            throw exception::memory("Couldn't allocate memory of size "s +
+            throw exception::memory(std::string("Couldn't allocate memory of size ") +
                                     std::to_string(count * sizeof(T)));
         }
 
