@@ -176,6 +176,11 @@ namespace plugin
             return *_instance_;
         }
 
+        static bool is_initialized()
+        {
+            return static_cast<bool>(_instance_);
+        }
+
         static SCOREP_Metric_Plugin_MetricProperties* get_event_info_handler(char* name)
         {
             // In order, that the exception handling works, we have to trust on a few things here.
