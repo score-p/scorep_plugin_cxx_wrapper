@@ -66,9 +66,9 @@ namespace chrono
 
         void set_tick_rate(local_time_point_t local_stop, scorep::chrono::ticks scorep_stop)
         {
-            const auto local_duration = local_stop - local_start_;
+            local_duration_ = local_stop - local_start_;
             const auto scorep_duration = scorep_stop - scorep_start_;
-            tick_rate_ = static_cast<double>(scorep_duration.count()) / local_duration.count();
+            tick_rate_ = static_cast<double>(scorep_duration.count()) / local_duration_.count();
 
             state_ = state::tick_rate_set;
         }
@@ -110,6 +110,16 @@ namespace chrono
         }
 
     public:
+        local_duration_t duration() const
+        {
+            if (!is_synchronized())
+            {
+                exception::raise("Trying to get the duration, when NOT yet synchronized.");
+            }
+
+            return local_duration_;
+        }
+
         template <typename T>
         scorep::chrono::ticks to_ticks(const T duration) const
         {
@@ -144,6 +154,7 @@ namespace chrono
 
     private:
         local_time_point_t local_start_;
+        local_duration_t local_duration_;
         scorep::chrono::ticks scorep_start_;
         double tick_rate_;
         state state_ = state::init_called;
