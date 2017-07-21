@@ -338,6 +338,13 @@ namespace plugin
 
         static SCOREP_Metric_Plugin_Info get_info()
         {
+            // FIXME Workaround for this bug in glibc:
+            // https://sourceware.org/ml/libc-alpha/2016-06/msg00203.html
+            // Solution here, declare a thread_local variable and access it once.
+            // This seems to solve the problem. ¯\_(ツ)_/¯
+            static thread_local volatile int tls_dummy;
+            tls_dummy++;
+
             SCOREP_Metric_Plugin_Info info;
             memset(&info, 0, sizeof(SCOREP_Metric_Plugin_Info));
 
