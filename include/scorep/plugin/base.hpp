@@ -29,10 +29,6 @@
 #ifndef INCLUDE_SCOREP_PLUGIN_BASE_HPP
 #define INCLUDE_SCOREP_PLUGIN_BASE_HPP
 
-#ifndef ENV_CONFIG_PREFIX
-#define ENV_CONFIG_PREFIX "SCOREP_METRIC_PLUGIN_"
-#endif
-
 #include <scorep/plugin/interface.hpp>
 #include <scorep/plugin/metric_property.hpp>
 #include <scorep/plugin/policy/fwd.hpp>
