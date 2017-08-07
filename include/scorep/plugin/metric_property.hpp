@@ -166,6 +166,13 @@ namespace plugin
 
             return *this;
         }
+
+        self& value_exponent(int64_t new_exponent) noexcept
+        {
+            exponent = new_exponent;
+
+            return *this;
+        }
     };
 }
 }
