@@ -29,6 +29,7 @@
 #ifndef SCOREP_PLUGIN_UTIL_MATCHER_HPP
 #define SCOREP_PLUGIN_UTIL_MATCHER_HPP
 
+#include <algorithm>
 #include <sstream>
 #include <string>
 #include <vector>
