@@ -45,7 +45,7 @@ namespace chrono
 
         static const bool is_steady = true;
 
-        static scorep::chrono::ticks now() noexcept
+        static scorep::chrono::ticks now()
         {
             if (clock_function() == nullptr)
             {
