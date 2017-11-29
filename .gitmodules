@@ -1,3 +1,6 @@
 [submodule "common"]
 	path = common
 	url = https://github.com/score-p/scorep_plugin_common.git
+[submodule "lib/nitro"]
+	path = lib/nitro
+	url = https://github.com/tud-zih-energy/nitro.git

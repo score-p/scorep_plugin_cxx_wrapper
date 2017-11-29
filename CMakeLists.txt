@@ -37,7 +37,9 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/common;${CMAKE_MODULE_PATH}")
 # Intialize git submodules if not done already
 file(GLOB SUBMODULE_FILES "${CMAKE_SOURCE_DIR}/common/*")
 list(LENGTH SUBMODULE_FILES COUNT_COMMON)
-if(${COUNT_COMMON} EQUAL 0)
+file(GLOB SUBMODULE_FILES "${CMAKE_SOURCE_DIR}/lib/nitro/*")
+list(LENGTH SUBMODULE_FILES COUNT_NITRO)
+if(${COUNT_COMMON} EQUAL 0 OR ${COUNT_NITRO} EQUAL 0)
     message(STATUS "Initializing git submodule")
     execute_process(COMMAND "git" "submodule" "init" WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
     execute_process(COMMAND "git" "submodule" "update" WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
@@ -45,7 +47,7 @@ endif()
 
 include(common/DefaultBuildType.cmake)
 
-include(cmake/NitroLog.cmake)
+add_subdirectory(lib/nitro)
 
 find_package(Scorep REQUIRED)
 if(SCOREP_FOUND)
@@ -59,6 +61,11 @@ add_library(async_plugin SHARED scorep_async_test_plugin.cpp)
 add_library(async_oid_plugin SHARED scorep_async_object_id_test_plugin.cpp)
 add_library(sine_plugin SHARED scorep_sync_test_plugin.cpp)
 add_library(sine_strict_plugin SHARED scorep_sync_strict_test_plugin.cpp)
+
+target_link_libraries(async_plugin PRIVATE Nitro::Log)
+target_link_libraries(async_oid_plugin PRIVATE Nitro::Log)
+target_link_libraries(sine_plugin PRIVATE Nitro::Log)
+target_link_libraries(sine_strict_plugin PRIVATE Nitro::Log)
 
 include(CTest)
 

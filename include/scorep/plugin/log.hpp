@@ -107,7 +107,7 @@ namespace plugin
             using log_filter = nitro::log::filter::severity_filter<Record>;
         }
 
-        typedef nitro::log::logger<detail::record, detail::log_formater, nitro::log::sink::stderr,
+        typedef nitro::log::logger<detail::record, detail::log_formater, nitro::log::sink::StdErr,
                                    detail::log_filter>
             logging;
 
