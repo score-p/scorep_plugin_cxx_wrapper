@@ -26,40 +26,4 @@
 # WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-#
-# CMake magic to easily use the Score-P CXX plugin wrapper in your plugin.
-#
-
-#
-# Usage:
-#
-# git submodule add git@github.com:score-p/scorep_plugin_cxx_wrapper.git scorep
-#
-# In your CMakeLists.txt
-# include(scorep/ScorepCXXPlugin.cmake)
-#
-
-# Intialize git submodules if not done already
-file(GLOB SUBMODULE_FILES "${CMAKE_CURRENT_LIST_DIR}/common/*")
-list(LENGTH SUBMODULE_FILES COUNT_COMMON)
-if(${COUNT_COMMON} EQUAL 0)
-    message(STATUS "Initializing git submodule")
-    execute_process(COMMAND "git" "submodule" "init" WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}")
-    execute_process(COMMAND "git" "submodule" "update" WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}")
-endif()
-
-
-# inlcude build settings for nitro log
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/NitroLog.cmake)
-
-# Note: The CMake Magic requires, that Score-P was found with a FindScorep script.
-if(SCOREP_FOUND)
-    include_directories(SYSTEM ${SCOREP_INCLUDE_DIRS})
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-    include_directories(SYSTEM ${CMAKE_CURRENT_LIST_DIR}/include)
-
-    message(STATUS "Score-P CXX plugin wrapper found.")
-else()
-    message(STATUS "Score-P was not found but is required!")
-    message(SEND_ERROR "Scorep CXX plugin wrapper needs Score-P!")
-endif()
+message(SEND_ERROR "Be modern. Use add_subdirectory(...) and link against the library: Scorep::scorep-plugin-cxx")
