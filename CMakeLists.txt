@@ -30,7 +30,7 @@ project(scorep_cplus_abstraction_plugin)
 
 cmake_minimum_required(VERSION 3.8)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/common")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/common")
 
 # Intialize git submodules if not done already
 include(common/GitSubmoduleUpdate.cmake)
