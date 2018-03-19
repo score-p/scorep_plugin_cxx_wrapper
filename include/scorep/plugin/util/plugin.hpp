@@ -35,7 +35,8 @@ namespace scorep
 {
 namespace plugin
 {
-    inline std::string& name()
+    // I'm sorry, not so sorry.
+    static std::string& name()
     {
         static std::string name_;
         return name_;
@@ -51,7 +52,7 @@ namespace plugin
 
         return std::string("SCOREP_METRIC_") + upper_name + "_PLUGIN_";
     }
-}
-}
+} // namespace plugin
+} // namespace scorep
 
 #endif // INCLUDE_SCOREP_PLUGIN_UTIL_PLUGIN_HPP
