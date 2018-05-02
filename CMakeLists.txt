@@ -33,7 +33,7 @@ cmake_minimum_required(VERSION 3.8)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/common")
 
 # Intialize git submodules if not done already
-include(common/GitSubmoduleUpdate.cmake)
+include(cmake/GitSubmoduleUpdate.cmake)
 git_submodule_update()
 
 include(common/DefaultBuildType.cmake)
