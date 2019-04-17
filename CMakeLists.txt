@@ -45,7 +45,7 @@ find_package(Scorep REQUIRED)
 
 add_library(scorep-plugin-cxx INTERFACE)
 target_include_directories(scorep-plugin-cxx INTERFACE include)
-target_link_libraries(scorep-plugin-cxx INTERFACE Nitro::nitro-log Nitro::nitro-env Scorep::Plugin)
+target_link_libraries(scorep-plugin-cxx INTERFACE Nitro::log Nitro::env Scorep::Plugin)
 target_compile_features(scorep-plugin-cxx INTERFACE cxx_std_14)
 
 add_library(Scorep::scorep-plugin-cxx ALIAS scorep-plugin-cxx)
