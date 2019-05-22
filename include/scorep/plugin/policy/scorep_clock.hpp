@@ -55,7 +55,7 @@ namespace plugin
 
             static void set_clock_handler(std::uint64_t (*clock)())
             {
-                scorep::plugin::log::wtime_attribute::wtime_ptr() = clock;
+                scorep::plugin::log::ScorepClock::wtime_ptr() = clock;
                 scorep::chrono::measurement_clock::clock_function() = clock;
             }
         };

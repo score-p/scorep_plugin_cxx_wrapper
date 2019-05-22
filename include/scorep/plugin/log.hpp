@@ -49,30 +49,22 @@ namespace plugin
 {
     namespace log
     {
-
-        class wtime_attribute
+        struct ScorepClock
         {
-            std::uint64_t my_timestamp;
-            using clock_pointer_t = std::uint64_t (*)();
-
-        public:
-            wtime_attribute()
+            using time_point = std::uint64_t;
+            static time_point now()
             {
                 if (wtime_ptr() == nullptr)
                 {
-                    my_timestamp = 0;
+                    return 0;
                 }
                 else
                 {
-                    my_timestamp = wtime_ptr()();
+                    return wtime_ptr()();
                 }
             }
 
-            uint64_t wtime() const
-            {
-                return my_timestamp;
-            }
-
+            using clock_pointer_t = std::uint64_t (*)();
             static clock_pointer_t& wtime_ptr()
             {
                 static uint64_t (*clock)(void);
@@ -83,9 +75,9 @@ namespace plugin
         namespace detail
         {
 
-            typedef nitro::log::record<nitro::log::message_attribute, wtime_attribute,
-                                       nitro::log::hostname_attribute,
-                                       nitro::log::severity_attribute>
+            typedef nitro::log::record<
+                nitro::log::message_attribute, nitro::log::timestamp_clock_attribute<ScorepClock>,
+                nitro::log::hostname_attribute, nitro::log::severity_attribute>
                 record;
 
             template <typename Record>
@@ -97,7 +89,8 @@ namespace plugin
                     std::stringstream s;
 
                     s << "Score-P " << scorep::plugin::name() << " plugin: [" << r.hostname()
-                      << "][" << r.wtime() << "][" << r.severity() << "]: " << r.message() << '\n';
+                      << "][" << r.timestamp() << "][" << r.severity() << "]: " << r.message()
+                      << '\n';
 
                     return s.str();
                 }
@@ -105,7 +98,7 @@ namespace plugin
 
             template <typename Record>
             using log_filter = nitro::log::filter::severity_filter<Record>;
-        }
+        } // namespace detail
 
         typedef nitro::log::logger<detail::record, detail::log_formater, nitro::log::sink::StdErr,
                                    detail::log_filter>
@@ -119,7 +112,7 @@ namespace plugin
     } // namespace log
 
     using log::logging;
-}
-}
+} // namespace plugin
+} // namespace scorep
 
 #endif // INCLUDE_LOG_HPP
