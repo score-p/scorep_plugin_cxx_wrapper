@@ -38,7 +38,7 @@ git_submodule_update()
 
 include(common/DefaultBuildType.cmake)
 
-set(NITRO_POSITION_INDEPENDENT_CODE ON)
+set(NITRO_POSITION_INDEPENDENT_CODE ON CACHE INTERNAL "")
 add_subdirectory(lib/nitro)
 
 find_package(Scorep REQUIRED)
