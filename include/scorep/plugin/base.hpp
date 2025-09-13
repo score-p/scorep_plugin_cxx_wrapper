@@ -103,10 +103,20 @@ namespace plugin
             traits::has_one_of<traits::list<policy::once<Child, traits::meta_list<Args...>>,
                                             policy::per_host<Child, traits::meta_list<Args...>>,
                                             policy::per_process<Child, traits::meta_list<Args...>>,
-                                            policy::per_thread<Child, traits::meta_list<Args...>>>,
+                                            policy::per_thread<Child, traits::meta_list<Args...>>,
+                                            policy::per_topology<Child, traits::meta_list<Args...>>>,
                                traits::list<Args<Child, traits::meta_list<Args...>>...>>::value,
-            "A plugin must ether have the once, the per_host, the per_process, or the per_thread "
-            "policy!");
+            "A plugin must ether have the once, the per_host, the per_process, the per_thread, "
+            "or the per_topology policy!");
+
+        static_assert(
+            !traits::has_policy<policy::per_topology<Child, traits::meta_list<Args...>>,
+                                traits::list<Args<Child, traits::meta_list<Args...>>...>>::value ||
+                traits::has_all_of<
+                    traits::list<policy::per_topology<Child, traits::meta_list<Args...>>,
+                                 policy::async<Child, traits::meta_list<Args...>>>,
+                    traits::list<Args<Child, traits::meta_list<Args...>>...>>::value,
+            "The topology policy depends on the async policy, which is missing in the plugin!");
 
         static_assert(
             !traits::has_all_of<traits::list<policy::synchronize<Child, traits::meta_list<Args...>>,
@@ -128,8 +138,11 @@ namespace plugin
         template <bool Test = false>
         int32_t add_metric(const std::string&)
         {
-            static_assert(Test, "The base plugin requires the definition of the method "
-                                "`int32_t add_metric(const std::string&)`");
+            static_assert(
+                traits::has_policy<policy::per_topology<Child, traits::meta_list<Args...>>,
+                                traits::list<Args<Child, traits::meta_list<Args...>>...>>::value,
+                "The base plugin requires the definition of the method "
+                "`int32_t add_metric(const std::string&)` for non-per_topology plugins");
 
             return 0;
         }

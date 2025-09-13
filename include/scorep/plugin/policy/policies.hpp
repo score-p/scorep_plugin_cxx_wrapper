@@ -42,6 +42,7 @@
 #include <scorep/plugin/policy/per_host.hpp>
 #include <scorep/plugin/policy/per_process.hpp>
 #include <scorep/plugin/policy/per_thread.hpp>
+#include <scorep/plugin/policy/per_topology.hpp>
 
 #include <scorep/plugin/policy/object_id.hpp>
 #include <scorep/plugin/policy/synchronize.hpp>
