@@ -50,7 +50,7 @@ namespace plugin
         for (auto& c : upper_name)
             c = toupper(c);
 
-        return std::string("SCOREP_METRIC_") + upper_name + "_PLUGIN_";
+        return upper_name + "_PLUGIN_";
     }
 } // namespace plugin
 } // namespace scorep
