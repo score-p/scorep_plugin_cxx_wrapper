@@ -43,9 +43,17 @@ using namespace scorep::plugin::policy;
 
 using scorep::plugin::logging;
 
-class topology_plugin : public scorep::plugin::base<topology_plugin, async, per_topology, scorep_clock>
+class topology_plugin : public scorep::plugin::base<topology_plugin, config_vars, async, per_topology, scorep_clock>
 {
 public:
+    topology_plugin(std::map<std::string, std::string> configVars)
+    {
+        for (const auto& [name, value] : configVars)
+        {
+            logging::info() << "get variable: " << name << "=" << value;
+        }
+    }
+
     using TVPair = std::pair<scorep::chrono::ticks, double>;
 
     // Convert a named metric (may contain wildcards or so) to a vector of
@@ -96,6 +104,12 @@ public:
         {
             cursor.write(tvpair.first, tvpair.second);
         }
+    }
+
+public:
+    static std::map<std::string, std::string> declare_config_vars()
+    {
+        return { { "test", "default" } };
     }
 
 private:

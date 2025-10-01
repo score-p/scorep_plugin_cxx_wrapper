@@ -29,10 +29,11 @@
 #ifndef INCLUDE_SCOREP_PLUGIN_POLICY_POLICIES_HPP
 #define INCLUDE_SCOREP_PLUGIN_POLICY_POLICIES_HPP
 
+#include <scorep/plugin/policy/config_vars.hpp>
 #include <scorep/plugin/policy/scorep_clock.hpp>
 
-#include <scorep/plugin/policy/frequent.hpp>
 #include <scorep/plugin/policy/post_mortem.hpp>
+#include <scorep/plugin/policy/frequent.hpp>
 
 #include <scorep/plugin/policy/async.hpp>
 #include <scorep/plugin/policy/sync.hpp>

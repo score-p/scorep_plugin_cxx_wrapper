@@ -36,6 +36,9 @@ namespace plugin
     namespace policy
     {
         template <typename T, typename Policies>
+        class config_vars;
+
+        template <typename T, typename Policies>
         class post_mortem;
         template <typename T, typename Policies>
         class frequent;

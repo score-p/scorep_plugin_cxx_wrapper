@@ -312,8 +312,17 @@ namespace plugin
                 auto level = severity_from_string(log_verbose, nitro::log::severity_level::info);
                 scorep::plugin::log::set_min_severity_level(level);
 
-                // construct plugin instance
-                _instance_.reset(new Child());
+                if constexpr (traits::has_policy<policy::config_vars<Child, traits::meta_list<Args...>>,
+                                                 traits::list<Args<Child, traits::meta_list<Args...>>...>>::value)
+                {
+                    // construct plugin instance
+                    _instance_.reset(new Child(Child::get_config_vars()));
+                }
+                else
+                {
+                    // construct plugin instance
+                    _instance_.reset(new Child());
+                }
 
                 return 0;
             }
