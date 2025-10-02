@@ -29,10 +29,11 @@
 #ifndef INCLUDE_SCOREP_PLUGIN_POLICY_POLICIES_HPP
 #define INCLUDE_SCOREP_PLUGIN_POLICY_POLICIES_HPP
 
+#include <scorep/plugin/policy/config_vars.hpp>
 #include <scorep/plugin/policy/scorep_clock.hpp>
 
-#include <scorep/plugin/policy/frequent.hpp>
 #include <scorep/plugin/policy/post_mortem.hpp>
+#include <scorep/plugin/policy/frequent.hpp>
 
 #include <scorep/plugin/policy/async.hpp>
 #include <scorep/plugin/policy/sync.hpp>
@@ -42,6 +43,7 @@
 #include <scorep/plugin/policy/per_host.hpp>
 #include <scorep/plugin/policy/per_process.hpp>
 #include <scorep/plugin/policy/per_thread.hpp>
+#include <scorep/plugin/policy/per_topology.hpp>
 
 #include <scorep/plugin/policy/object_id.hpp>
 #include <scorep/plugin/policy/synchronize.hpp>

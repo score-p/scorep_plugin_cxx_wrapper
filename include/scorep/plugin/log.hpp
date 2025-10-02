@@ -88,7 +88,7 @@ namespace plugin
                 {
                     std::stringstream s;
 
-                    s << "Score-P " << scorep::plugin::name() << " plugin: [" << r.hostname()
+                    s << scorep::plugin::name() << " plugin: [" << r.hostname()
                       << "][" << r.timestamp() << "][" << r.severity() << "]: " << r.message()
                       << '\n';
 

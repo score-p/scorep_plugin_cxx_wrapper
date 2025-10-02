@@ -36,6 +36,9 @@ namespace plugin
     namespace policy
     {
         template <typename T, typename Policies>
+        class config_vars;
+
+        template <typename T, typename Policies>
         class post_mortem;
         template <typename T, typename Policies>
         class frequent;
@@ -60,6 +63,8 @@ namespace plugin
         class per_process;
         template <typename T, typename Policies>
         class per_thread;
+        template <typename T, typename Policies>
+        class per_topology;
 
         template <typename T, typename Policies>
         class synchronize;

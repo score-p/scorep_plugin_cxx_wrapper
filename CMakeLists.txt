@@ -65,6 +65,9 @@ if(${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
     add_library(sine_strict_plugin MODULE scorep_sync_strict_test_plugin.cpp)
     target_link_libraries(sine_strict_plugin PRIVATE Scorep::scorep-plugin-cxx)
 
+    add_library(topology_plugin MODULE scorep_topology_test_plugin.cpp)
+    target_link_libraries(topology_plugin PRIVATE Scorep::scorep-plugin-cxx)
+
     include(CTest)
     add_executable(matcher_test tests/matcher_test.cpp)
     target_link_libraries(matcher_test Scorep::scorep-plugin-cxx)
